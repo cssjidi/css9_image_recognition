@@ -1,0 +1,78 @@
+{template 'common/header'}
+
+<button id="scan">扫描</button>
+
+{template 'common/footer'} 
+<script type="text/javascript">
+	require(['jquery'], function($) {
+		var appIdstr = "{$wx['appId']}";
+        var timestampstr = "{$wx['timestamp']}";
+        var nonceStrstr = "{$wx['nonceStr']}";
+        var signaturestr = "{$wx['signature']}";
+        var setting = {
+        	//debug: true,
+            appId: appIdstr,
+            timestamp: timestampstr,
+            nonceStr: nonceStrstr,
+            signature: signaturestr,
+        }
+        var config = $.extend({},jssdkconfig,setting)
+        wx.config(config);
+		wx.ready(function () {
+			$('#scan').on('click',function(){
+				wx.chooseImage({
+					count: 1, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function (res) {
+						var localIds = res.localIds;
+	                    /*判断ios是不是用的 wkwebview 内核*/
+	                    if (window.__wxjs_is_wkwebview){
+	                        for (var i = 0; i < localIds.length; i++){
+	                            wx.getLocalImgData({
+	                                localId:res.localIds[i],
+	                                success: function (res){
+	                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+	                                    alert(localData)
+	                                }
+	                            })
+	                        }
+	                    }else{   //如果不是用的wkwebview 内核 或者是用的安卓系统 执行下面的xunh
+	                        //alert('ids:'+localIds);
+	                        wx.uploadImage({
+							localId: localIds[0],
+							isShowProgressTips: 1, // 默认为1，显示进度提示
+							success: function (res) {
+								var serverId = res.serverId; // 返回图片的服务器端ID
+								//alert("message", serverId);
+								wx.downloadImage({
+								serverId: serverId,
+								isShowProgressTips: 1, // 默认为1，显示进度提示
+								success: function (res) {
+									var localId = res.localId;
+									$('body').append('<img src="'+localId+'" width="100"/>');
+									alert(localId);
+								}
+								});
+							}
+							});
+	                    }
+					}
+				});
+			})
+		})
+		function recognize(image){
+			var url = '{php echo $this->createMobileUrl("recognize") }';
+			$.ajax({
+				url:url,
+				type:'post',
+				dataType:'json',
+				data:{
+					image:image
+				}
+			}).done(function(data){
+				alert(JSON.stringify(data))
+			})
+		}
+	})
+</script>
