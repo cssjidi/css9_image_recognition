@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="1.0">
+	<application setting="true">
+		<name><![CDATA[图像识别]]></name>
+		<identifie><![CDATA[css9_image_recognition]]></identifie>
+		<version><![CDATA[1.0.3]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[图像识别]]></ability>
+		<description><![CDATA[图像识别]]></description>
+		<author><![CDATA[css9.com-ouyang]]></author>
+		<url><![CDATA[http://css9.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+			<message type="text" />
+			<message type="image" />
+			<message type="voice" />
+			<message type="video" />
+			<message type="location" />
+			<message type="link" />
+			<message type="subscribe" />
+			<message type="unsubscribe" />
+			<message type="qr" />
+			<message type="trace" />
+			<message type="click" />
+			<message type="enter" />
+		</subscribes>
+		<handles>
+			<message type="text" />
+			<message type="image" />
+			<message type="voice" />
+			<message type="video" />
+			<message type="location" />
+			<message type="link" />
+			<message type="subscribe" />
+			<message type="qr" />
+			<message type="trace" />
+			<message type="click" />
+			<message type="enter" />
+		</handles>
+		<rule embed="true" />
+	</platform>
+	<bindings>
+		<cover>
+			<entry title="入口设置" do="home" />
+		</cover>
+		<rule>
+			<entry title="规则" do="rule" state="" direct="false" />
+		</rule>
+	</bindings>
+	<install></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
+</manifest>
